@@ -39,6 +39,7 @@ if (process.env.NODE_ENV !== 'production') {
 
   if (hasProxy) {
     const isBuiltInModifier = makeMap('stop,prevent,self,ctrl,shift,alt,meta,exact')
+    console.log('keycodes', config.keycodes);
     config.keyCodes = new Proxy(config.keyCodes, {
       set (target, key, value) {
         if (isBuiltInModifier(key)) {
@@ -76,9 +77,11 @@ if (process.env.NODE_ENV !== 'production') {
   }
 
   initProxy = function initProxy (vm) {
+    console.log(hasProxy);
     if (hasProxy) {
       // determine which proxy handler to use
       const options = vm.$options
+      console.log('render', options.render);
       const handlers = options.render && options.render._withStripped
         ? getHandler
         : hasHandler

@@ -20,7 +20,8 @@ export function initMixin (Vue: Class<Component>) {
 
     let startTag, endTag
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+    if (process.env.NODE_ENV !== 'production' && config.performance && mark) { 
+      // 通过window.perfomance计算性能
       startTag = `vue-perf-start:${vm._uid}`
       endTag = `vue-perf-end:${vm._uid}`
       mark(startTag)
@@ -35,18 +36,22 @@ export function initMixin (Vue: Class<Component>) {
       // internal component options needs special treatment.
       initInternalComponent(vm, options)
     } else {
+      console.log('constructor', vm.constructor);
+      // 合并options
       vm.$options = mergeOptions(
-        resolveConstructorOptions(vm.constructor),
-        options || {},
-        vm
+        resolveConstructorOptions(vm.constructor), // 从构造函数中取
+        options || {}, // 从传入的options中取
+        vm // 当前实例
       )
     }
     /* istanbul ignore else */
+    console.log('env', process.env.NODE_ENV);
     if (process.env.NODE_ENV !== 'production') {
       initProxy(vm)
     } else {
       vm._renderProxy = vm
     }
+    console.log(vm._renderProxy);
     // expose real self
     vm._self = vm
     initLifecycle(vm)

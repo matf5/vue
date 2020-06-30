@@ -161,7 +161,7 @@ export function cached<F: Function> (fn: F): F {
 /**
  * Camelize a hyphen-delimited string.
  */
-const camelizeRE = /-(\w)/g
+const camelizeRE = /-(\w)/g // -后带有字符串的
 export const camelize = cached((str: string): string => {
   return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : '')
 })

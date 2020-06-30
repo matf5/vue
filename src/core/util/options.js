@@ -296,16 +296,18 @@ export function validateComponentName (name: string) {
  * Object-based format.
  */
 function normalizeProps (options: Object, vm: ?Component) {
+  // 将props转为对象
   const props = options.props
   if (!props) return
   const res = {}
   let i, val, name
   if (Array.isArray(props)) {
+    // 如果是数组， 转对象
     i = props.length
     while (i--) {
       val = props[i]
       if (typeof val === 'string') {
-        name = camelize(val)
+        name = camelize(val) // 将字符串转成驼峰
         res[name] = { type: null }
       } else if (process.env.NODE_ENV !== 'production') {
         warn('props must be strings when using array syntax.')
@@ -385,6 +387,13 @@ function assertObjectType (name: string, value: any, vm: ?Component) {
  * Merge two option objects into a new one.
  * Core utility used in both instantiation and inheritance.
  */
+/** 
+ *     vm.$options = mergeOptions(
+        resolveConstructorOptions(vm.constructor), // 从构造函数中取
+        options || {}, // 从传入的options中取
+        vm // vue实例
+      )
+*/
 export function mergeOptions (
   parent: Object,
   child: Object,
@@ -393,12 +402,12 @@ export function mergeOptions (
   if (process.env.NODE_ENV !== 'production') {
     checkComponents(child)
   }
-
+  console.log('typeof child', typeof child);
   if (typeof child === 'function') {
     child = child.options
   }
 
-  normalizeProps(child, vm)
+  normalizeProps(child, vm) // 格式化props为一个对象
   normalizeInject(child, vm)
   normalizeDirectives(child)
 
@@ -406,6 +415,7 @@ export function mergeOptions (
   // but only if it is a raw options object that isn't
   // the result of another mergeOptions call.
   // Only merged options has the _base property.
+  console.log(child._base, child.mixins);
   if (!child._base) {
     if (child.extends) {
       parent = mergeOptions(parent, child.extends, vm)
@@ -428,7 +438,7 @@ export function mergeOptions (
     }
   }
   function mergeField (key) {
-    const strat = strats[key] || defaultStrat
+    const strat = strats[key] || defaultStrat // 如果没有手写合并策略 则覆盖式合并
     options[key] = strat(parent[key], child[key], vm, key)
   }
   return options
