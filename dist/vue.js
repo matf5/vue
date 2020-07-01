@@ -755,6 +755,7 @@
   function pushTarget (target) {
     targetStack.push(target);
     Dep.target = target;
+    console.log('pushtarget', targetStack, Dep.target);
   }
 
   function popTarget () {
@@ -3506,6 +3507,7 @@
     // normalization is always applied for the public version, used in
     // user-written render functions.
     vm.$createElement = function (a, b, c, d) { return createElement(vm, a, b, c, d, true); };
+    console.log('createElement', vm.$createElement);
 
     // $attrs & $listeners are exposed for easier HOC creation.
     // they need to be reactive so that HOCs using them are always updated
@@ -3772,6 +3774,7 @@
     vm._hasHookEvent = false;
     // init parent attached events
     var listeners = vm.$options._parentListeners;
+    console.log('listeners', listeners);
     if (listeners) {
       updateComponentListeners(vm, listeners);
     }
@@ -3915,9 +3918,10 @@
 
   function initLifecycle (vm) {
     var options = vm.$options;
-
+    console.log('initlife', 'options', options.parent);
     // locate first non-abstract parent
     var parent = options.parent;
+    // 有父组件 且非抽象
     if (parent && !options.abstract) {
       while (parent.$options.abstract && parent.$parent) {
         parent = parent.$parent;
@@ -4221,6 +4225,7 @@
     // #7573 disable dep collection when invoking lifecycle hooks
     pushTarget();
     var handlers = vm.$options[hook];
+    console.log('handlers', handlers);
     var info = hook + " hook";
     if (handlers) {
       for (var i = 0, j = handlers.length; i < j; i++) {
@@ -4643,7 +4648,8 @@
   function initState (vm) {
     vm._watchers = [];
     var opts = vm.$options;
-    if (opts.props) { initProps(vm, opts.props); }
+    console.log('initstate', opts, opts.props);
+    if (opts.props) { initProps(vm, opts.props); } // 现在是一个实例 内容是从原型中获取到的
     if (opts.methods) { initMethods(vm, opts.methods); }
     if (opts.data) {
       initData(vm);
@@ -4999,11 +5005,11 @@
         );
       }
       /* istanbul ignore else */
-      console.log('env', "development");
+      console.log('env', vm);
       {
         initProxy(vm);
       }
-      console.log(vm._renderProxy);
+      console.log('renderproxy', vm._renderProxy);
       // expose real self
       vm._self = vm;
       initLifecycle(vm);

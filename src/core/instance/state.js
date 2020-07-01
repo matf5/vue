@@ -48,7 +48,8 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 export function initState (vm: Component) {
   vm._watchers = []
   const opts = vm.$options
-  if (opts.props) initProps(vm, opts.props)
+  console.log('initstate', opts, opts.props);
+  if (opts.props) initProps(vm, opts.props) // 现在是一个实例 内容是从原型中获取到的
   if (opts.methods) initMethods(vm, opts.methods)
   if (opts.data) {
     initData(vm)

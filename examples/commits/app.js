@@ -13,17 +13,22 @@ new Vue({
   data: {
     branches: ['master', 'dev'],
     currentBranch: 'master',
-    commits: null
+    commits: null,
+    msg:'tttt'
   },
 
   created: function () {
     this.fetchData()
   },
-
+  component: {
+    childComponent
+  },
   watch: {
     currentBranch: 'fetchData'
   },
-
+  mounted: function() {
+    console.log('父组件mounted');
+  },
   filters: {
     truncate: function (v) {
       var newline = v.indexOf('\n')
@@ -35,6 +40,16 @@ new Vue({
   },
 
   methods: {
+    getMsg:function(data){
+      console.log(data);
+   },
+   postMsg () {
+      console.log('父组件中响应的')
+   },
+   parentCreate(){
+    console.log("父组件 created");
+   },
+
     fetchData: function () {
       var self = this
       if (navigator.userAgent.indexOf('PhantomJS') > -1) {
@@ -51,6 +66,32 @@ new Vue({
         }
         xhr.send()
       }
+    },
+    onClick(e) {
+      console.log('click', e);
     }
   }
 })
+
+var childComponent =  Vue.component('child',{
+  template:"<div><p @click='showMsg'>{{childMsg}}</p></div>",
+  data:function(){
+   return {
+      childMsg:"Hello child"
+   }
+  },
+  mounted: function() {
+    console.log('子组件mounted');
+  },
+  name: 'child',
+  created:function(){
+   console.log("子组件created");
+  },
+  props:['msg1','msg2'],
+  methods:{
+     showMsg:function(){
+       this.$emit('childclick', '子组件抛出去吧');
+     }
+  }
+});
+

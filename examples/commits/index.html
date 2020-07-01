@@ -31,8 +31,9 @@
           name="branch"
           v-model="currentBranch">
         <label :for="branch">{{ branch }}</label>
+        <child @childclick="getMsg" msg1="aaa" v-on:click.native="postMsg" @hook:created="parentCreate"></child>
       </template>
-      <p>vuejs/vue@{{ currentBranch }}</p>
+      <p @click="onClick">vuejs/vue@{{ currentBranch }}</p>
       <ul>
         <li v-for="record in commits">
           <a :href="record.html_url" target="_blank" class="commit">{{ record.sha.slice(0, 7) }}</a>

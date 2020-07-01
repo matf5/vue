@@ -45,13 +45,13 @@ export function initMixin (Vue: Class<Component>) {
       )
     }
     /* istanbul ignore else */
-    console.log('env', process.env.NODE_ENV);
+    console.log('env', vm);
     if (process.env.NODE_ENV !== 'production') {
       initProxy(vm)
     } else {
       vm._renderProxy = vm
     }
-    console.log(vm._renderProxy);
+    console.log('renderproxy', vm._renderProxy);
     // expose real self
     vm._self = vm
     initLifecycle(vm)

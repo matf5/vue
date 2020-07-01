@@ -14,6 +14,7 @@ export function initEvents (vm: Component) {
   vm._hasHookEvent = false
   // init parent attached events
   const listeners = vm.$options._parentListeners
+  console.log('listeners', listeners);
   if (listeners) {
     updateComponentListeners(vm, listeners)
   }
